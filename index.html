@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tree Plantation | Jharkhand Rai University</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1a3a1a;
+    --leaf: #3d7a3d;
+    --lime: #7ec850;
+    --gold: #c8a84b;
+    --cream: #f5f0e8;
+    --bark: #6b4226;
+    --sky: #e8f4e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--forest);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--cream);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 20px; height: 20px;
+    border: 2px solid var(--lime);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease, background 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor.hover { background: var(--lime); transform: translate(-50%,-50%) scale(1.5); }
+
+  /* Animated background */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(61,122,61,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(126,200,80,0.1) 0%, transparent 40%),
+      radial-gradient(ellipse at 60% 80%, rgba(107,66,38,0.2) 0%, transparent 40%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Falling leaves */
+  .leaf {
+    position: fixed;
+    font-size: 1.2rem;
+    opacity: 0;
+    animation: fall linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  main { position: relative; z-index: 2; }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    position: relative;
+    border-bottom: 1px solid rgba(126,200,80,0.2);
+  }
+
+  .university-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: linear-gradient(135deg, var(--gold), #e8c870, var(--gold));
+    color: var(--forest);
+    padding: 0.6rem 2rem;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(200,168,75,0.4);
+    animation: shimmer 3s ease infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { box-shadow: 0 4px 20px rgba(200,168,75,0.4); }
+    50% { box-shadow: 0 4px 40px rgba(200,168,75,0.7); }
+  }
+
+  .university-badge .logo-leaf { font-size: 1.4rem; }
+
+  .uni-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--cream);
+    text-shadow: 0 0 60px rgba(126,200,80,0.3);
+    margin-bottom: 0.3rem;
+    animation: fadeUp 1s ease forwards;
+    opacity: 0;
+  }
+
+  .uni-sub {
+    font-size: 0.9rem;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    animation: fadeUp 1s 0.2s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero-tree {
+    font-size: clamp(4rem, 15vw, 9rem);
+    line-height: 1;
+    animation: sway 4s ease-in-out infinite, fadeUp 1.5s 0.4s ease forwards;
+    opacity: 0;
+    display: block;
+    filter: drop-shadow(0 0 30px rgba(126,200,80,0.5));
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 900;
+    color: var(--lime);
+    line-height: 0.9;
+    margin: 1rem 0 0.5rem;
+    animation: fadeUp 1s 0.6s ease forwards;
+    opacity: 0;
+    text-shadow: 0 0 80px rgba(126,200,80,0.4);
+  }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    color: var(--gold);
+    margin-bottom: 1rem;
+    animation: fadeUp 1s 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  .species-tag {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.4rem 1.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    animation: fadeUp 1s 1s ease forwards;
+    opacity: 0;
+  }
+
+  /* DIVIDER */
+  .vine-divider {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    opacity: 0.5;
+    letter-spacing: 0.5rem;
+  }
+
+  /* ECO SQUAD */
+  .squad-section {
+    padding: 3rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title span { color: var(--lime); }
+
+  .section-desc {
+    text-align: center;
+    color: rgba(245,240,232,0.6);
+    font-size: 0.9rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Members grid */
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .member-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(126,200,80,0.15);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .member-card:hover {
+    background: rgba(126,200,80,0.08);
+    border-color: rgba(126,200,80,0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  .member-num {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--leaf), var(--lime));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .member-info { min-width: 0; }
+  .member-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--cream);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .member-id {
+    font-size: 0.7rem;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  /* About Tree Section */
+  .about-tree {
+    padding: 3rem 2rem;
+    max-width: 750px;
+    margin: 0 auto;
+    text-align: center;
+    animation: fadeUp 1s 1.2s ease forwards;
+    opacity: 0;
+  }
+
+  .about-inner {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(126,200,80,0.2);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(126,200,80,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .about-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--cream);
+    margin: 0.4rem 0 1.5rem;
+  }
+
+  .about-title span { color: var(--lime); }
+
+  .about-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: rgba(245,240,232,0.85);
+    line-height: 1.8;
+    border: none;
+    padding: 0;
+    position: relative;
+  }
+
+  .quote-mark {
+    font-size: 3rem;
+    color: var(--gold);
+    opacity: 0.5;
+    line-height: 0;
+    vertical-align: -0.6rem;
+    font-style: normal;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* Course info strip */
+  .course-strip {
+    background: linear-gradient(135deg, rgba(200,168,75,0.15), rgba(126,200,80,0.1));
+    border-top: 1px solid rgba(200,168,75,0.3);
+    border-bottom: 1px solid rgba(200,168,75,0.3);
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .course-strip p {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 0.4rem;
+  }
+
+  .course-strip h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+  }
+
+  .course-strip .batch {
+    display: inline-flex;
+    gap: 2rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--cream);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(126,200,80,0.15);
+    opacity: 0.6;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="bg-layer"></div>
+
+<!-- Falling leaves -->
+<div id="leaves"></div>
+
+<main>
+  <header>
+    <h1 class="uni-name">Jharkhand Rai University</h1>
+    <p class="uni-sub">Ranchi, Jharkhand · Est. 2011</p>
+  </header>
+
+  <section class="hero">
+    <span class="hero-tree">🌳</span>
+    <h2 class="hero-title">Tree Plantation</h2>
+    <p class="hero-subtitle">A Green Initiative by The Leaf Legacy</p>
+    <span class="species-tag">🌿 Ashok Tree · Saraca Asoca</span>
+  </section>
+
+  <div class="vine-divider">🌿 ✦ 🌿 ✦ 🌿</div>
+
+  <!-- ABOUT THE TREE -->
+  <section class="about-tree">
+    <div class="about-inner">
+      <p class="section-label">🌿 About the Tree</p>
+      <h2 class="about-title">Saraca <span>Asoca</span></h2>
+      <blockquote class="about-quote">
+        <span class="quote-mark">&ldquo;</span>
+        The Ashoka tree (Saraca Asoca) is one of India's most sacred and medicinally rich trees, revered for over 2,000 years in Ayurvedic tradition. Its name literally means <em>'without grief'</em> in Sanskrit.
+        <span class="quote-mark">&rdquo;</span>
+      </blockquote>
+    </div>
+  </section>
+
+  <div class="course-strip">
+    <p>Academic Program</p>
+    <h3>Character Building & Holistic Development of Personality</h3>
+    <div class="batch">
+      <span>📚 BMLT — Semester II</span>
+      <span>📅 Batch 2025–28</span>
+    </div>
+  </div>
+
+  <section class="squad-section">
+    <p class="section-label">🌱 Meet the team</p>
+    <h2 class="section-title">The <span>Leaf Legacy</span></h2>
+    <p class="section-desc">17 passionate students committed to a greener tomorrow</p>
+
+    <div class="members-grid" id="membersGrid"></div>
+  </section>
+</main>
+
+<footer>
+  <p>🌍 Planted with love for the planet · Jharkhand Rai University · 2025</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .member-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+
+  // Members data
+  const members = [
+    { name: 'AARYA KUMAR', id: 'BMLT/25/005' },
+    { name: 'SHIVAM KUMAR', id: 'BMLT/25/019' },
+    { name: 'DHARMENDRA KUMAR YADAV', id: 'BMLT/25/057' },
+    { name: 'PRITI KUMARI', id: 'BMLT/25/013' },
+    { name: 'PRIYA KUMARI', id: 'BMLT/25/032' },
+    { name: 'ISHA KUMARI', id: 'BMLT/25/054' },
+    { name: 'RIYA KUMARI', id: 'BMLT/25/022' },
+    { name: 'AMIR EKBAL', id: 'BMLT/25/035' },
+    { name: 'VIVEK KUMAR VERMA', id: 'BMLT/25/008' },
+    { name: 'RAJDEV KUMAR VERMA', id: 'BMLT/25/072' },
+    { name: 'VAISHNAVI KUMARI', id: 'BMLT/25/006' },
+    { name: 'PAYAL PATEL', id: 'BMLT/25/020' },
+  ];
+
+  const grid = document.getElementById('membersGrid');
+  members.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'member-card';
+    card.style.animationDelay = (i * 0.05) + 's';
+    card.innerHTML = `
+      <div class="member-num">${i + 1}</div>
+      <div class="member-info">
+        <div class="member-name">${m.name}</div>
+        <div class="member-id">${m.id}</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Falling leaves
+  const leavesContainer = document.getElementById('leaves');
+  const leafEmojis = ['🍃', '🌿', '🍀', '🌱'];
+  for (let i = 0; i < 12; i++) {
+    const leaf = document.createElement('div');
+    leaf.className = 'leaf';
+    leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+    leaf.style.left = Math.random() * 100 + 'vw';
+    leaf.style.animationDuration = (8 + Math.random() * 10) + 's';
+    leaf.style.animationDelay = (Math.random() * 10) + 's';
+    leaf.style.fontSize = (0.8 + Math.random() * 1) + 'rem';
+    leavesContainer.appendChild(leaf);
+  }
+</script>
+</body>
+</html>
